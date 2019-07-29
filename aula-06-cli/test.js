@@ -1,5 +1,5 @@
 const { deepEqual } = require('assert');
-const database = require('./database');
+const Database = require('./database');
 
 const defaultItemCadastrado = {
   nome: "Flash",
@@ -15,28 +15,28 @@ const defaultItemAtualizar = {
 
 describe('Switch de manipulação de Heróis', () => {
   before(async () => {
-    await database.cadastrar(defaultItemCadastrado);
-    await database.cadastrar(defaultItemAtualizar);
+    await Database.cadastrar(defaultItemCadastrado);
+    await Database.cadastrar(defaultItemAtualizar);
   });
 
   it("Deve pesquisar um heroi usando arquivos", async () => {
     const expected = defaultItemCadastrado;
-    const [resultado] = await database.listar(expected.id);
+    const [resultado] = await Database.listar(expected.id);
 
     deepEqual(resultado, expected);
   });
 
   it('Deve cadastrar um heroi, usando arquivos', async () => {
     const expected = defaultItemCadastrado;
-    const resultado = await database.cadastrar(defaultItemCadastrado);
-    const [actual] = await database.listar(defaultItemCadastrado.id);
+    const resultado = await Database.cadastrar(defaultItemCadastrado);
+    const [actual] = await Database.listar(defaultItemCadastrado.id);
 
     deepEqual(actual, expected);
   });
 
   it.only('Deve remover um heroi por id', async () => {
     const expected = true;
-    const resultado = await database.remover(defaultItemCadastrado.id);
+    const resultado = await Database.remover(defaultItemCadastrado.id);
 
     deepEqual(resultado, expected);
   });
@@ -53,8 +53,8 @@ describe('Switch de manipulação de Heróis', () => {
       poder: "Laço"
     }
 
-    await database.atualizar(defaultItemAtualizar.id, novoDado);
-    const [resultado] = await database.listar(defaultItemAtualizar.id);
+    await Database.atualizar(defaultItemAtualizar.id, novoDado);
+    const [resultado] = await Database.listar(defaultItemAtualizar.id);
 
     deepEqual(resultado, expected);
   });

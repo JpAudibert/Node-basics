@@ -25,5 +25,12 @@ describe('Switch de manipulação de Heróis', () => {
     const [actual] = await database.listar(defaultItemCadastrado.id);
 
     deepEqual(actual, expected);
+  });
+
+  it.only('Deve remover um heroi por id', async() => {
+    const expected = true;
+    const resultado = await database.remover(defaultItemCadastrado.id);
+    
+    deepEqual(resultado, expected);
   })
 })

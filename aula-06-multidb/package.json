@@ -2,6 +2,10 @@
   "name": "aula-06-multidb",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "test": "mocha src/tests/*.js",
+    "test:watch": "mocha src/tests/*.js -w"
+  },
   "license": "MIT",
   "dependencies": {
     "pg": "^7.12.1",

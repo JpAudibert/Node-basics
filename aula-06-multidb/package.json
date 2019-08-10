@@ -2,5 +2,13 @@
   "name": "aula-06-multidb",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.13.0"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.0"
+  }
 }

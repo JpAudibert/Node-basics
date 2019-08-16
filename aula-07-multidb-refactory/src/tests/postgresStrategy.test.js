@@ -1,8 +1,10 @@
 const assert = require('assert')
-const Postgres = require('../db/strategies/postgres')
-const Context = require('../db/strategies/base/contextStrategy')
+const Postgres = require('./../db/strategies/postgres/postgres')
+const HeroiSchema = require('./../db/strategies/postgres/schemas/HeroiSchema')
+const Context = require('./../db/strategies/base/contextStrategy')
 
-const context = new Context(new Postgres())
+let context = {}
+
 const MOCK_HEROI_CADASTRAR = {
   nome: 'Gavião Negro',
   poder: 'Flechas'
@@ -13,10 +15,12 @@ const MOCK_HEROI_ATUALIZAR = {
   poder: 'Cinto de utilidades'
 }
 
-describe('Postgres Strategy', function () {
+describe.only('Postgres Strategy', function () {
   this.timeout(Infinity)
   this.beforeAll(async () => {
-    await context.connect()
+    const connection = await Postgres.connect()
+    const model = await Postgres.defineModel(connection, HeroiSchema)
+    context = new Context(new Postgres(connection, model))
     await context.delete()
     await context.create(MOCK_HEROI_ATUALIZAR)
   })
@@ -50,7 +54,7 @@ describe('Postgres Strategy', function () {
       poder: 'Teia',
     }
     const [result] = await context.update(itemAtualizar.id, novoItem)
-    
+
     const [itemAtualizado] = await context.read({ id: itemAtualizar.id })
     delete itemAtualizado.id
 

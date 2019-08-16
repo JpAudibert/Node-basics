@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "mocha src/tests/mongoDbStrategy.test.js",
-    "test:watch": "mocha src/tests/mongoDbStrategy.test.js -w"
+    "test": "mocha src/tests/*.test.js",
+    "test:watch": "mocha src/tests/*.test.js -w"
   },
   "license": "MIT",
   "dependencies": {

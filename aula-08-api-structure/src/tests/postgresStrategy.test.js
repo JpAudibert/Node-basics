@@ -15,7 +15,7 @@ const MOCK_HEROI_ATUALIZAR = {
   poder: 'Cinto de utilidades'
 }
 
-describe.only('Postgres Strategy', function () {
+describe('Postgres Strategy', function () {
   this.timeout(Infinity)
   this.beforeAll(async () => {
     const connection = await Postgres.connect()

@@ -51,7 +51,7 @@ class HeroRoutes extends BaseRoute {
           failAction,
           payload: {
             nome: Joi.string().required().min(3).max(100),
-            poder: Joi.string().required().min(3).max(20)
+            poder: Joi.string().required().min(3).max(100)
           }
         }
       },
@@ -66,6 +66,44 @@ class HeroRoutes extends BaseRoute {
             _id: result._id
           }
 
+        } catch (error) {
+          console.error('Deu Ruim', error)
+          return 'Internal Error'
+        }
+      }
+    }
+  }
+
+  update() {
+    return {
+      path: '/herois/{id}',
+      method: 'PATCH',
+      config: {
+        validate: {
+          params: {
+            id: Joi.string().required()
+          },
+          payload: {
+            nome: Joi.string().min(3).max(100),
+            poder: Joi.string().min(3).max(100)
+          }
+        }
+      },
+      handler: async (request) => {
+        try {
+          const { id } = request.params
+          const { payload } = request
+          const dadosString = JSON.stringify(payload)
+          const dados = JSON.parse(dadosString)
+
+          const result = await this.db.update(id, dados)
+          if (result.nModified !== 1) return {
+            message: 'Não foi possível atualizar'
+          }
+
+          return {
+            message: 'Heroi atualizado com sucesso!'
+          }
         } catch (error) {
           console.error('Deu Ruim', error)
           return 'Internal Error'

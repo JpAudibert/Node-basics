@@ -7,9 +7,23 @@ const MOCK_HEROI_CADASTRAR = {
   poder: 'Marreta Biônica'
 }
 
+const MOCK_HEROI_INICIAL = {
+  nome: 'BABY SHARK',
+  poder: 'DU DU RU DU DU'
+}
+
+let MOCK_ID = ''
+
 describe.only('Teste da API Heroes', function () {
   this.beforeAll(async () => {
     app = await api
+    const result = await app.inject({
+      method: 'POST',
+      url: '/herois',
+      payload: JSON.stringify(MOCK_HEROI_INICIAL)
+    })
+    const dados = JSON.parse(result.payload)
+    MOCK_ID = dados._id
   })
 
   it('Listar /herois', async () => {
@@ -75,5 +89,23 @@ describe.only('Teste da API Heroes', function () {
     assert.notStrictEqual(_id, undefined)
     assert.deepEqual(message, 'Heroi cadastrado com sucesso!')
 
+  })
+
+  it('Atualizar PATCH - /herois/:id', async () => {
+    const _id = MOCK_ID
+    const expected = {
+      poder: 'TUTUTUBARÃO'
+    }
+    const result = await app.inject({
+      method: 'PATCH',
+      url: `/herois/${_id}`,
+      payload: JSON.stringify(JSON.stringify(expected))
+    })
+
+    const statusCode = result.statusCode
+    const dados = JSON.parse(result.payload)
+
+    assert.ok(statusCode === 200)
+    assert.deepEqual(dados.message, 'Heroi atualizado com sucesso!')
   })
 })

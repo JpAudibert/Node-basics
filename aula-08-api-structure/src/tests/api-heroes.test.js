@@ -14,7 +14,7 @@ const MOCK_HEROI_INICIAL = {
 
 let MOCK_ID = ''
 
-describe.only('Teste da API Heroes', function () {
+describe('Teste da API Heroes', function () {
   this.beforeAll(async () => {
     app = await api
     const result = await app.inject({
@@ -107,5 +107,19 @@ describe.only('Teste da API Heroes', function () {
 
     assert.ok(statusCode === 200)
     assert.deepEqual(dados.message, 'Heroi atualizado com sucesso!')
+  })
+
+  it('Remover DELETE - /herois/:id', async () => {
+    const id = MOCK_ID
+    const result = await app.inject({
+      method: 'DELETE',
+      url: `/herois/${id}`
+    })
+
+    const statusCode = result.statusCode
+    const dados = JSON.parse(result.payload)
+
+    assert.ok(statusCode === 200 )
+    assert.deepEqual(dados.message, 'Heroi removido com sucesso')
   })
 })

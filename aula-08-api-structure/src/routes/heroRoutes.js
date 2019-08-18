@@ -1,5 +1,6 @@
 const BaseRoute = require('./base/baseRoute')
 const Joi = require('joi')
+const Boom = require('boom')
 
 const failAction = (request, headers, erro) => {
   throw erro
@@ -34,7 +35,7 @@ class HeroRoutes extends BaseRoute {
 
         } catch (error) {
           console.error('Deu Ruim', error);
-          return 'Erro interno no servidor'
+          return Boom.internal()
 
         }
       }
@@ -68,7 +69,7 @@ class HeroRoutes extends BaseRoute {
 
         } catch (error) {
           console.error('Deu Ruim', error)
-          return 'Internal Error'
+          return Boom.internal()
         }
       }
     }
@@ -80,6 +81,7 @@ class HeroRoutes extends BaseRoute {
       method: 'PATCH',
       config: {
         validate: {
+          failAction,
           params: {
             id: Joi.string().required()
           },
@@ -98,7 +100,7 @@ class HeroRoutes extends BaseRoute {
 
           const result = await this.db.update(id, dados)
           if (result.nModified !== 1) return {
-            message: 'Não foi possível atualizar'
+            message: Boom.preconditionFailed('ID não encontrado no banco :(')
           }
 
           return {
@@ -106,7 +108,40 @@ class HeroRoutes extends BaseRoute {
           }
         } catch (error) {
           console.error('Deu Ruim', error)
-          return 'Internal Error'
+          return Boom.internal()
+        }
+      }
+    }
+  }
+
+  delete() {
+    return {
+      path: '/herois/{id}',
+      method: 'DELETE',
+      config: {
+        validate: {
+          failAction,
+          params: {
+            id: Joi.string().required()
+          }
+        }
+      },
+      handler: async (request) => {
+        try {
+          const { id } = request.params
+          const result = await this.db.delete(id)
+          if (result.n !== 1) {
+            return {
+              message: Boom.preconditionFailed('ID não encontrado no banco :(')
+            }
+          }
+          return {
+            message: 'Heroi removido com sucesso'
+          }
+
+        } catch (error) {
+          console.error('Deu Ruim', error)
+          return Boom.internal()
         }
       }
     }

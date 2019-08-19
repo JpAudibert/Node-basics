@@ -1,5 +1,5 @@
 # Node-basics
-A node BR' course to start developing with Node JS, tought by Erick Wendel
+A node BR's course to start developing with Node JS, tought by Erick Wendel
 
 This is a very good specialization course. It's fenomenal! i'm learning a lot of
 NodeJS, from the very beginning, until some advanced features, like security and 

@@ -1,3 +1,15 @@
+const { config } = require('dotenv')
+const { join } = require('path')
+const { ok } = require('assert')
+
+const env = process.env.NODE_ENV || 'dev'
+ok(env === 'prod' || env === 'dev', 'A env é inválida, ou dev ou prod')
+
+const configPath = join(__dirname, './../config', `.env.${env}`)
+config({
+  path: configPath
+})
+
 const Hapi = require('hapi')
 const Mongo = require('./db/strategies/mongodb/mongodb')
 const HeroiSchema = require('./db/strategies/mongodb/schemas/heroisSchema')
@@ -13,10 +25,11 @@ const Vision = require('vision')
 const Inert = require('inert')
 
 const HapiJwt = require('hapi-auth-jwt2')
-const JWT_SECRET = 'SEGREDOZAO_123'
+const JWT_SECRET = process.env.JWT_KEY
+
 
 const app = new Hapi.Server({
-  port: 5000
+  port: process.env.PORT
 })
 
 const mapRoutes = (instance, methods) => {

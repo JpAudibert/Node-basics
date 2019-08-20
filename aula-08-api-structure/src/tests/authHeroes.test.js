@@ -34,9 +34,26 @@ describe('Switch de autenticação', function () {
 
     const statusCode = result.statusCode
     const dados = JSON.parse(result.payload)
-    
+
     assert.deepEqual(statusCode, 200)
     assert.ok(dados.token.length > 10)
+  })
+
+  it('Deve retornar não autorizado ao tentar obter um login errado', async () => {
+    const result = await app.inject({
+      method: 'POST',
+      url: '/login',
+      payload: {
+        username: 'João Pedro',
+        password: '123'
+      }
+    })
+
+    const statusCode = result.statusCode
+    const dados = JSON.parse(result.payload)
+
+    assert.deepEqual(statusCode, 401)
+    assert.deepEqual(dados.error, 'Unauthorized')
   })
 
 })

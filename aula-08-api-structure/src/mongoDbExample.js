@@ -2,8 +2,6 @@ const Mongoose = require('mongoose')
 
 Mongoose.connect('mongodb://joaopedro:joaopedro@localhost:27017/herois',
   { useNewUrlParser: true })
-  .then(() => console.log("Deu bom fei"))
-  .catch(() => console.log("Deu ruim fei"))
 
 const connection = Mongoose.connection
 connection.once('open', () => {
